@@ -40,8 +40,10 @@ public class SmsActivity extends AppCompatActivity {
         adapter = new SmsAdapter();
         binding.recyclerView.setAdapter(adapter);
 
-        binding.editYear.setText("2022");
-        binding.editMonth.setText("6");
+        Calendar calendar = Calendar.getInstance();
+
+        binding.editYear.setText(calendar.get(Calendar.YEAR)+"");
+        binding.editMonth.setText((calendar.get(Calendar.MONTH)+1)+"");
 
         smsViewModel = new SmsViewModel();
 
@@ -72,16 +74,15 @@ public class SmsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 2001) {
             if (grantResults[0] != 0) {
-                Log.d("mvvm", "권한 안승인");
+                Log.d(" myunggyu", "권한 안승인");
                 smsViewModel.retryPermission(this);
             } else {
-                Log.d("mvvm","sms데이터 재요청");
+                Log.d("myunggyu","sms데이터 재요청");
                 getSms();
             }
         }
     }
 
-//    addressi:15447200 datei:1656699384058 bodyi:[Web발신] 신한카드(5403)승인 노*규 5,100원(일시불)07/02 03:16 CU 태평스타  누적704,948원
     private void getSms() {
         int year = Integer.parseInt(binding.editYear.getText().toString());
         int month = Integer.parseInt(binding.editMonth.getText().toString());
@@ -90,7 +91,7 @@ public class SmsActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<SmsModel> smsModels) {
                 if (smsModels != null && !smsModels.isEmpty()) {
-                    Log.e("mvvm", "observe onChanged()=" + smsModels.size());
+                    Log.e("myunggyu", "observe onChanged()=" + smsModels.size());
                     adapter.addSmsList(smsModels);
                     adapter.notifyDataSetChanged();
                 }

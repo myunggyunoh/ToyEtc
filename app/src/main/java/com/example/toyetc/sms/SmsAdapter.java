@@ -3,6 +3,7 @@ package com.example.toyetc.sms;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
@@ -66,16 +67,19 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SnsHolder> {
     @Override
     public void onBindViewHolder(final SnsHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.binding.setModel( snsList.get(position) );
-        holder.binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        Log.d("myunggyu","onBindViewHolder : " + snsList.get(position).isCheck());
+        holder.binding.checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                boolean b = holder.binding.checkbox.isChecked();
                 if (b) {
                     sumMoney += snsList.get(position).getMoney();
                 } else {
                     sumMoney -= snsList.get(position).getMoney();
                 }
+                snsList.get(position).setCheck(b);
                 mListener.onClick(sumMoney);
-                Log.d("mvvm", "onChecked... " + sumMoney);
+                Log.d("myunggyu", "onChecked... " + sumMoney);
             }
         });
     }

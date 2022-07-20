@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_year"
+                android:hint="년도"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+            <EditText
+                android:id="@+id/edit_month"
+                android:hint="월"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="문자가져오기"/>
+
+            <TextView
+                android:id="@+id/tv_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="합계"/>
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</layout>

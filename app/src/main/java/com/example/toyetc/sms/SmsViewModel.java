@@ -19,14 +19,16 @@ public class SmsViewModel extends ViewModel {
         smsRepo = new SmsRepo();
     }
 
-    public LiveData<List<SmsModel>> getSms(Context context, int year, int month) {
+    public LiveData<List<SmsModel>> getSms(Context context, int year, int month,
+                                           String callNumber, String moneyStandard,
+                                           String productStandardStart, String productStandardEnd) {
 //        if(mutableLiveData==null){
-            mutableLiveData = smsRepo.requestSms(context, year, month);
+            mutableLiveData = smsRepo.requestSms(context, year, month, callNumber, moneyStandard, productStandardStart, productStandardEnd);
 //        }
         return mutableLiveData;
     }
-
-    public void getPermission(Context context) {
+//    Context context, int year, int month, String callNumber, String moneyStandard, String productStandardStart, String productStandardEnd
+    public void requestPermission(Context context) {
         smsRepo.requestPermission(context);
     }
 

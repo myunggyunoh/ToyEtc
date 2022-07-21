@@ -4,7 +4,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tv_address"
@@ -13,6 +14,7 @@
             android:text="@{model.address}"
             android:hint="번호"
             android:layout_marginRight="20dp"
+            android:visibility="gone"
             />
 
         <TextView
@@ -27,7 +29,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{model.body}"
+            android:text="@{model.moneyStr}"
             android:hint="메시지? 뭐넣지? "
             android:layout_marginRight="20dp"/>
 
@@ -41,9 +43,9 @@
 
         <CheckBox
             android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layoutDirection="rtl"
             android:checked="@{model.isCheck}"
             />
     </LinearLayout>

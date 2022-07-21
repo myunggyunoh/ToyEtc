@@ -4,6 +4,7 @@ public class SmsModel {
     private String date;
     private String body;
     private int money;
+    private String moneyStr;
     private String address;
     private String product;
     private boolean isCheck;
@@ -55,5 +56,13 @@ public class SmsModel {
 
     public void setCheck(boolean check) {
         isCheck = check;
+    }
+
+    public String getMoneyStr() {
+        return moneyStr;
+    }
+
+    public void setMoneyStr(String moneyStr) {
+        this.moneyStr = moneyStr;
     }
 }

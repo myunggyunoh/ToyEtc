@@ -84,4 +84,15 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.SnsHolder> {
         });
     }
 
+    public String getCopyText() {
+        String text = "";
+        for (int i=0; i<snsList.size(); i++) {
+            SmsModel data = snsList.get(i);
+            if (data.isCheck()) {
+                text = text + data.getDate() + " " + data.getProduct() + " " + data.getMoneyStr() + "\n";
+            }
+        }
+        return text;
+    }
+
 }

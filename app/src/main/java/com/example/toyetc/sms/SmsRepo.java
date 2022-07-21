@@ -31,12 +31,14 @@ import java.util.List;
 public class SmsRepo {
     private final String TAG = getClass().getSimpleName();
 
-    public MutableLiveData<List<SmsModel>> requestSms(Context context, int year, int month) {
+    public MutableLiveData<List<SmsModel>> requestSms(Context context, int year, int month,
+                                                      String callNumber, String moneyStandard,
+                                                      String productStandardStart, String productStandardEnd) {
         Log.d("myunggyu", "requestSms");
 
         String[] date = getDate(year, month);
         String[] what = new String[]{ "address","date", "body"};
-        String where = "address" + "='15447200'" + " AND date>'"+ date[0] +"' " + "AND date<'"+ date[1] +"'";
+        String where = "address=" + callNumber + " AND date>"+ date[0] +" AND date<"+ date[1];
 
         List<SmsModel> list = new ArrayList<>();
 
@@ -52,16 +54,18 @@ public class SmsRepo {
                 SmsModel s = new SmsModel();
                 s.setAddress(cursor.getString(0));
                 s.setDate(getDateFormat(cursor.getString(1)));
-                String strMoney = getMoney(cursor.getString(2));
-                s.setBody(strMoney);
+
+                String body = cursor.getString(2);
+                s.setBody(body);
+                String strMoney = getMoneyToString(body, moneyStandard);
+                s.setMoneyStr(strMoney);
                 s.setMoney(getMoneyToInt(strMoney));
-                s.setProduct(getProduct(cursor.getString(2)));
+                s.setProduct(getProduct(body, productStandardStart, productStandardEnd));
                 list.add(s);
             } while (cursor.moveToNext());
         } else {
             Log.d("myunggyu","empty box, no SMS");
         }
-
 
         final MutableLiveData<List<SmsModel>> mutableLiveData = new MutableLiveData<>();
         mutableLiveData.setValue(list);
@@ -115,7 +119,7 @@ public class SmsRepo {
     }
 
 
-    private String getProduct(String body) {
+    private String getProduct(String body, String start, String end) {
         String product = "";
 
         if (body.indexOf("신한체크거절") > 0) {
@@ -128,9 +132,12 @@ public class SmsRepo {
 //            money = money + "(승인)";
         }
 
-        int start = body.indexOf(":");
-        int end = body.indexOf("누적");
-        for (int i = start + 3; i < end; i++) {
+        int startIdx = body.indexOf(start); //":"
+        int endIdx = body.indexOf(end); //"누적"
+        if (start.equals(":")) {
+            startIdx = startIdx + 2;
+        }
+        for (int i = startIdx + start.length(); i < endIdx; i++) {
             product += body.charAt(i);
         }
 
@@ -139,17 +146,16 @@ public class SmsRepo {
 
     private String getDateFormat(String date) {
         @SuppressLint("SimpleDateFormat")
-        DateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat sdf1 = new SimpleDateFormat("MM-dd hh:mm");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(date));
         return sdf1.format(calendar.getTime());
     }
 
-    private String getMoney(String body) {
+    private String getMoneyToString(String body, String standard) {
         String money = "";
-
-        int start = body.indexOf("노*규");
-        for (int i=start+3; i<body.length(); i++) {
+        int start = body.indexOf(standard);
+        for (int i = start + standard.length(); i<body.length(); i++) {
             if (String.valueOf(body.charAt(i)).equals("(")) {
                 money = "체크카드";
                 break;

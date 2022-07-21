@@ -8,13 +8,17 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.toyetc.R;
+import com.example.toyetc.common.PreferenceUtil;
 import com.example.toyetc.databinding.ActivitySmsBinding;
 
 import java.text.DateFormat;
@@ -35,27 +39,30 @@ public class SmsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sms);
 
-        binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SmsAdapter();
-        binding.recyclerView.setAdapter(adapter);
-
-        Calendar calendar = Calendar.getInstance();
-
-        binding.editYear.setText(calendar.get(Calendar.YEAR)+"");
-        binding.editMonth.setText((calendar.get(Calendar.MONTH)+1)+"");
+        init();
 
         smsViewModel = new SmsViewModel();
 
-
+        //권한
         if(ActivityCompat.checkSelfPermission(this,android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            smsViewModel.getPermission(this);
+            smsViewModel.requestPermission(this);
         }
 
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSms();
+            }
+        });
+
+        binding.buttonCopy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String copyText = adapter.getCopyText();
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("label", copyText);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(SmsActivity.this,"복사됐어",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -67,6 +74,23 @@ public class SmsActivity extends AppCompatActivity {
         };
         adapter.setListener(smsItemClickListener);
 
+    }
+
+    private void init() {
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new SmsAdapter();
+        binding.recyclerView.setAdapter(adapter);
+
+        Calendar calendar = Calendar.getInstance();
+
+        binding.editYear.setText(calendar.get(Calendar.YEAR)+"");
+        binding.editMonth.setText((calendar.get(Calendar.MONTH)+1)+"");
+
+        binding.editCallNumber.setText(PreferenceUtil.getInstance(this).getCallNumber());
+        binding.editMoneyStandard.setText(PreferenceUtil.getInstance(this).getMoneyStandard());
+        binding.editProductStandardStart.setText(PreferenceUtil.getInstance(this).getProductStandardStart());
+        binding.editProductStandardEnd.setText(PreferenceUtil.getInstance(this).getProductStandardEnd());
     }
 
     @Override
@@ -86,8 +110,19 @@ public class SmsActivity extends AppCompatActivity {
     private void getSms() {
         int year = Integer.parseInt(binding.editYear.getText().toString());
         int month = Integer.parseInt(binding.editMonth.getText().toString());
+        String callNumber = binding.editCallNumber.getText().toString();
+        String moneyStandard = binding.editMoneyStandard.getText().toString();
+        String productStandardStart = binding.editProductStandardStart.getText().toString();
+        String productStandardEnd = binding.editProductStandardEnd.getText().toString();
 
-        smsViewModel.getSms(this, year, month).observe(this, new Observer<List<SmsModel>>() {
+        PreferenceUtil.getInstance(this).setCallNumber(callNumber);
+        PreferenceUtil.getInstance(this).setmoneyStandard(moneyStandard);
+        PreferenceUtil.getInstance(this).setProductStandardStart(productStandardStart);
+        PreferenceUtil.getInstance(this).setProductStandardEnd(productStandardEnd);
+
+
+        smsViewModel.getSms(this, year, month, callNumber, moneyStandard, productStandardStart, productStandardEnd)
+                .observe(this, new Observer<List<SmsModel>>() {
             @Override
             public void onChanged(List<SmsModel> smsModels) {
                 if (smsModels != null && !smsModels.isEmpty()) {

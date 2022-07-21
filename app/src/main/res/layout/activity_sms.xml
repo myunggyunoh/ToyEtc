@@ -14,34 +14,74 @@
             <EditText
                 android:id="@+id/edit_year"
                 android:hint="년도"
-                android:layout_width="100dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
             <EditText
                 android:id="@+id/edit_month"
                 android:hint="월"
-                android:layout_width="100dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:inputType="number"/>
 
             <Button
                 android:id="@+id/button"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="getSms"/>
+
+            <Button
+                android:id="@+id/buttonCopy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="문자가져오기"/>
+                android:text="copy"/>
 
             <TextView
                 android:id="@+id/tv_sum"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="합계"/>
+                android:text="합계"
+                android:gravity="right"
+                android:textSize="23dp"
+                android:layout_marginRight="10dp"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editCallNumber"
+                android:hint="전화번호"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editMoneyStandard"
+                android:hint="돈 앞 텍스트"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editProductStandardStart"
+                android:hint="상호명 앞 텍스트"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/editProductStandardEnd"
+                android:hint="상호명 뒤 텍스트"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
     </LinearLayout>
 
 </layout>

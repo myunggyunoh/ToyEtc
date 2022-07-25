@@ -194,39 +194,5 @@ public class SmsRepo {
 
         return money;
     }
-    public void requestPermission(Context context) {
-        String[] permissions = {
-            Manifest.permission.READ_SMS,
-        };
-
-        ActivityCompat.requestPermissions((Activity)context, permissions, 2001);
-    }
-
-
-    public void retryPermission(Context context) {
-        AlertDialog.Builder
-        localBuilder = new AlertDialog.Builder(context);
-        localBuilder.setTitle("권한 설정")
-                .setMessage("권한 거절로 인해 일부기능이 제한됩니다.")
-                .setPositiveButton("권한 설정하러 가기", new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt){
-                        try {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                                    .setData(Uri.parse("package:" + context.getPackageName()));
-                            context.startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-                            context.startActivity(intent);
-                        }
-                    }})
-                .setNegativeButton("취소하기", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
-                        Toast.makeText(context,"권한없음!",Toast.LENGTH_SHORT).show();
-                    }})
-                .create()
-                .show();
-    }
-
 
 }

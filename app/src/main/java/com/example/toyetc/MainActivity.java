@@ -9,6 +9,7 @@ import android.view.View;
 
 
 import com.example.toyetc.databinding.ActivityMainBinding;
+import com.example.toyetc.ocr.OcrActivity;
 import com.example.toyetc.sms.SmsActivity;
 
 
@@ -23,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SmsActivity.class));
+            }
+        });
+
+        binding.btnOcr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, OcrActivity.class));
             }
         });
     }

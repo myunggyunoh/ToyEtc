@@ -146,7 +146,7 @@ public class SmsRepo {
 
     private String getDateFormat(String date) {
         @SuppressLint("SimpleDateFormat")
-        DateFormat sdf1 = new SimpleDateFormat("MM-dd hh:mm");
+        DateFormat sdf1 = new SimpleDateFormat("MM-dd HH:mm");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(Long.parseLong(date));
         return sdf1.format(calendar.getTime());
